@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Private Chat App</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+  <button onclick="logout()" class="logout-btn">Logout</button>
+
+  <div class="container">
+
+    <div id="userList" class="user-list">
+      <h3>Online Users</h3>
+      <ul id="usersUl"></ul>
+    </div>
+
+    <div id="chat" class="chat-box" style="display:none;">
+      <h3>Chat with <span id="chatWith"></span></h3>
+      <div id="messages" class="messages"></div>
+      <div class="input-area">
+        <input type="file" id="imageInput" accept="image/*" />
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+
+  <script>
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'login.html';
+      } else {
+        setUsername(user.email);
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = 'login.html';
+      });
+    }
+  </script>
+</body>
+</html>
